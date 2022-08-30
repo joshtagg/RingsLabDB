@@ -11,11 +11,3 @@ print(type(y)) #prints data type (in this case int)
 j, k, l = 4, 1, 3 #multiple variables at once (change)
 
 print(j)
-
-
-
-#another change
-
-#atom changesss
-#atom change 2
-#atom change3
