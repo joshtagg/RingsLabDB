@@ -3,7 +3,7 @@ import scipy.io as sio
 import scipy.interpolate as interpolate
 import numpy as np
 
-
+#as to my understanding, the .sav file just contains arrays for: radius, data, et, lon, ringoccphi
 
 # read in .sav file
 # occultation of Alpha Arae on orbit 32
@@ -24,5 +24,14 @@ et = np.copy(mydata.et)
 lon = np.copy(mydata.lon)
 ringoccphi = np.copy(mydata.ringoccphi)
 
-print(lon[0])
+#print(lon[0])
+
+#plot data
+#plt.plot(radius, data)
+#plt.show()
+
+#zoom in on smaller set
+plt.plot(radius, data, 'b-', [84750, 84950], [10, 40], 'ro') # 'b-' == blue line, 'ro' == red dot
+plt.show()
+
 
