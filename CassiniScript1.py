@@ -35,7 +35,13 @@ ringoccphiLength = len(mydata.ringoccphi)
 #print('length of lon array: ' + str(lonLength))
 #print('length of ringoccphi array: ' + str(ringoccphiLength))
 
+
 #-------Process data---------------
+
+# prompt user for tableName (name of table for specific file at hand)
+# stick with .sav file naming convention?
+#tableName = input("What would you like to name the table for file " + )
+
 
 #sql file header here
 print("CREATE TABLE tableName\n(\n\tradius int,\n\tdata int,\n\tet int,\n\tlon int,\n\tringoccphi int,\n);\n\n", file=newFile)
@@ -44,8 +50,12 @@ i = 0
 while i < radiusLen:
     #do thing
     print('\t("' + str(radius[i]) + '", "' + str(data[i]) + '", "' + str(et[i]) + '", "' + str(lon[i]) + '", "' + str(ringoccphi[i]) + '"),', file=newFile)
-    i += 1
     #if last variable, instead of ending print with ',' you must end print with ';'
+    if i == radiusLen-1:
+        print('\t("' + str(radius[i]) + '", "' + str(data[i]) + '", "' + str(et[i]) + '", "' + str(lon[i]) + '", "' + str(ringoccphi[i]) + '");', file=newFile)
+    i += 1
+    
+
 
 print("program end")
 
@@ -64,3 +74,7 @@ newFile.close()
 
 #test 1 sql file size: 727,495KB
 
+#i want this program to be fleshed out and thorough so that it can be used in the future
+#have a simple interface
+#it goes file by file, asks "what would you name the table for file alpAra032.sav?"
+#turn sql file creation into a FUNCTION. if processing 8 files, run function 8 times 
