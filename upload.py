@@ -54,6 +54,7 @@ def upload_file():
 app.run(port=9999, debug=True)
 
 #--------------------------------
-#currentFileName = request.files['upload'].filename
-#currentFileName = 
-#mydata = sio.readsav(currentFileName)
+
+# NEXT STEPS:
+# upload multiple files at one instance
+# send .sql files into specific folder, away from everything else
