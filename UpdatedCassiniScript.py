@@ -56,7 +56,7 @@ for filename in os.listdir(directory):
 
     
     # find len of array (all arrays in .sav file are the same length)
-    radius = mydata.pdsdata.radius[0]
+    radius = mydata.pdsdata.radius[0] 
     arrayLen = len(radius)
 
     # delete .sav extension from curFile
