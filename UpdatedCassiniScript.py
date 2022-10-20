@@ -13,23 +13,23 @@ directory = 'C:/Users/joshu/Desktop/FixedRawData/testFolder'
 (18 total arrays?)
 arrays within 10km and 1km binned data:
     pdsdata.radius      -> name it: rad10km if 10km file    else, name it: rad1km
-    pdsdata.dat         -> name it: dat10km if 10km file    else, name it: dat1km
+    pdsdata.dat         -> name it: dat10km if 10km file    else, name it: dat1km (binned photon counts)
     pdsdata.nbins       -> name it: nbin10km if 10km file   else, name it: nbin1km
-    et
-    lon (longitude)
-    tau
-    taumax
-    phi
-    b_angle
-    background
-    dlos
-    imaxrr
-    imaxpts
-    backrr
-    backpts
-    flag (note flag)
-    source_product
-    cims_product
+    et (ephimerus time, sec)
+    lon (longitude, intertial frame)
+    tau (normal optical depth)
+    taumax (max measurable nod)
+    phi (clock angle, from outward radial direction from saturn to the line of sight to the projection in the line of sight to the star in the ring plane)
+    b_angle (ring plane declination angle)
+    background (bakcground photon count level)
+    dlos (line of sight distance from cassini to the occultation point in the ring)
+    imaxrr (radial locations where the unocculted star signal was observed)
+    imaxpts (unocculted star signal + background)
+    backrr (radial locations where the ring was opaque and the background signal was observed)
+    backpts (background signal at those locations)
+    flag (note flag, 0-128, note reference)
+    source_product (name of the unbinned data file from which these vectors were made)
+    cims_product (*unimportant)
 '''
 #mydata = sio.readsav(.sav)
 #mydata.pdsdata.radius
