@@ -2,6 +2,7 @@
 # Purpose of this program: convert .sav files into sql formatted files
 # New script to work with UVIS 1k and 10k .sav files
 
+from requests import delete
 import scipy.io as sio
 import os
 
@@ -77,13 +78,17 @@ for filename in os.listdir(directory):
 
     # delete .sav extension from curFile
     deletedExtension = curFile.rsplit(".", 1)[0]
+    # delete spaces (sql table name cannot have them)
+    deletedExtension = deletedExtension.replace(' ', '')
 
     '''
     #TEST
     #b_angleLen = len(b_angle)
     #print("length of b_angleLen array: " + str(b_angleLen))
     #print(radius)
-
+    print("b_angle number as string: " + str(b_angle))
+    print("b_angle number: " + b_angle)
+    
     print("length of radius array: " + str(len(radius)))
     print("length of dat array: " + str(len(dat)))
     print("length of nbins array: " + str(len(nbins)))
@@ -101,12 +106,12 @@ for filename in os.listdir(directory):
     print("length of source_product array: " + str(len(source_product)))
     print("length of cims_product array: " + str(len(cims_product)))
 
-    #same length: radius, dat, nbins, et, lon, tau, taumax, phi, background, dlos, flag
+    #same length: radius, dat, nbins, et, lon, tau, taumax, phi, background, dlos, flag     (arrayLen)
     #length of 1: b_angle
-    #unique length: imaxrr
-    #same length: backrr, backpts
-    #unique length: source_product
-    #unique length: cims_product
+    #unique length: imaxrr      (arrayLen2)
+    #same length: backrr, backpts   (arrayLen3)
+    #unique length: source_product  (arrayLen4)
+    #unique length: cims_product    (arrayLen5)
     #TEST
     '''
 
@@ -115,22 +120,78 @@ for filename in os.listdir(directory):
     newFile = open(deletedExtension + ".sql", 'wt')
 
     # Printing to new .sql file (inserting table header)
-    print("CREATE TABLE " + deletedExtension + "\n(\n\tradius int,\n\tdat int,\n\tnbins int,\n\tet int,\n\tlon int, \n\ttau int, \n\ttaumax int, \n\tphi int, \n\tbackground int, \n\tdlos int, \n\timaxrr int, \n\tbackrr int, \n\tbackpts int, \n\tflag int, \n\tsource_product int, \n\tcims_product int,\n);\n\n", file=newFile)
+    print("CREATE TABLE " + deletedExtension + "\n(\n\tradius int,\n\tdat int,\n\tnbins int,\n\tet int,\n\tlon int, \n\ttau int, \n\ttaumax int, \n\tphi int, \n\tbackground int, \n\tdlos int, \n\timaxrr int, \n\tbackrr int, \n\tbackpts int, \n\tflag int, \n\tsource_product int, \n\tcims_product int\n);\n\n", file=newFile)
     print("INSERT INTO " + deletedExtension + " (radius, dat, nbins, et, lon, tau, taumax, phi, background, dlos, imaxrr, backrr, backpts, flag, source_product, cims_product)\nVALUES\n", file=newFile)
     i=0
     while i < arrayLen:
-        print('\t("' + str(radius[i]) + '", "' + str(dat[i]) + '", "' + str(nbins[i]) + '", "' + str(et[i]) + '", "' + str(lon[i]) + '", "' + str(tau[i]) + '", "' + str(taumax[i]) + '", "' + str(phi[i]) + '", "' + '", "' + str(background[i]) + '", "' + str(dlos[i]) + '", "' + str(imaxrr[i]) + '", "' + str(backrr[i]) + '", "' + str(backpts[i]) + '", "' + str(flag[i]) + '", "' + str(source_product[i]) + '", "' + str(cims_product[i]) + '"),', file=newFile)
+        print('\t("' + str(radius[i]) + '", "' + str(dat[i]) + '", "' + str(nbins[i]) + '", "' + str(et[i]) + '", "' + str(lon[i]) + '", "' + str(tau[i]) + '", "' + str(taumax[i]) + '", "' + str(phi[i]) + '", "' +  str(background[i]) + '", "' + str(dlos[i]) + '", "' + str(flag[i]) + '"),', file=newFile)
         #if last variable, instead of ending print with ',' you must end print with ';'
         if i == arrayLen-1:
-            print('\t("' + str(radius[i]) + '", "' + str(dat[i]) + '", "' + str(nbins[i]) + '", "' + str(et[i]) + '", "' + str(lon[i]) + '", "' + str(tau[i]) + '", "' + str(taumax[i]) + '", "' + str(phi[i]) + '", "' + '", "' + str(background[i]) + '", "' + str(dlos[i]) + '", "' + str(imaxrr[i]) + '", "' + str(backrr[i]) + '", "' + str(backpts[i]) + '", "' + str(flag[i]) + '", "' + str(source_product[i]) + '", "' + str(cims_product[i]) + '");', file=newFile)
+            print('\t("' + str(radius[i]) + '", "' + str(dat[i]) + '", "' + str(nbins[i]) + '", "' + str(et[i]) + '", "' + str(lon[i]) + '", "' + str(tau[i]) + '", "' + str(taumax[i]) + '", "' + str(phi[i]) + '", "' + str(background[i]) + '", "' + str(dlos[i]) + '", "' + str(flag[i]) + '");', file=newFile)
         i += 1
 
-    # Insert b_angle table seperately
+    # Insert b_angle table seperately (length of 1)
+    # Turn b_angle into string because it prints with brackets [] for some reason
+    b_angleString = str(b_angle)
+    b_angleString = b_angleString.replace('[', '')
+    b_angleString = b_angleString.replace(']', '')
     print("INSERT INTO " + deletedExtension + " (b_angle)\nVALUES\n", file=newFile)
-    print('\t("' + str(b_angle) + '");', file=newFile)
+    #print('\t("' + str(b_angle) + '");', file=newFile)
+    print('\t("' + b_angleString + '");', file=newFile)
     
+    # Insert imaxrr seperately
+    arrayLen2 = len(imaxrr)
+    print("INSERT INTO " + deletedExtension + " (imaxrr)\nVALUES\n", file=newFile)
+    i = 0
+    while i < arrayLen2:
+        print('\t("' + str(imaxrr[i]) + '"),', file=newFile)
+
+        if i == arrayLen2-1:
+            print('\t("' + str(imaxrr[i]) + '");', file=newFile)
+        i+=1
+
+    # Insert backrr and backpts seperately
+    arrayLen3 = len(backrr)
+    print("INSERT INTO " + deletedExtension + " (backrr, backpts)\nVALUES\n", file=newFile)
+    i=0
+    while i < arrayLen3:
+        print('\t("' + str(backrr[i]) + '", "' + str(backpts[i]) + '"),', file=newFile)
+
+        if i == arrayLen3-1:
+            print('\t("' + str(backrr[i]) + '", "' + str(backpts[i]) + '");', file=newFile)
+        i+=1
+
+    # Insert source_product seperately
+    arrayLen4 = len(source_product)
+    print("INSERT INTO " + deletedExtension + " (source_product)\nVALUES\n", file=newFile)
+    i = 0
+    while i < arrayLen4:
+        print('\t("' + str(source_product[i]) + '"),', file=newFile)
+
+        if i == arrayLen4-1:
+            print('\t("' + str(source_product[i]) + '");', file=newFile)
+        i+=1
+
+    # Insert cims_product seperately
+    arrayLen5 = len(cims_product)
+    print("INSERT INTO " + deletedExtension + " (cims_product)\nVALUES\n", file=newFile)
+    i=0
+    while i < arrayLen5:
+        print('\t("' + str(cims_product[i]) + '"),', file=newFile)
+
+        if i == arrayLen5-1:
+            print('\t("' + str(cims_product[i]) + '");', file=newFile)
+        i+=1
+
+
+
     # close sql file
     newFile.close()
     
     
+    #FIXES:
+    #b_angle prints with brackets [] for some reason [FIXED 10-19-22]
+    #table name has spaces, remove spaces [FIXED 10-19-22]
     
+    #TODO:
+    #carefully look over sql files, proofread
