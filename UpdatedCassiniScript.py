@@ -7,7 +7,7 @@ import scipy.io as sio
 import os
 
 # assign directory
-directory = 'C:/Users/joshu/Desktop/FixedRawData/testFolder'
+directory = 'C:/Users/joshu/Desktop/FixedRawData/UVIS 1km Radially Binned PDS data IDL Save Files'
 
 '''
 (18 total arrays?)
@@ -47,6 +47,9 @@ for filename in os.listdir(directory):
 
     # readsav for current .sav file, sav file is now a dict
     mydata = sio.readsav(curFileDirectory)
+
+    #TEST
+    print("currenntly creating file: " + curFile)
 
     '''
     #TEST
@@ -115,13 +118,15 @@ for filename in os.listdir(directory):
     #TEST
     '''
 
-    
+    # change destination based on 1k or 10k files
     # create new .sql file for curFile
-    newFile = open(deletedExtension + ".sql", 'wt')
+    newFile = open("C:/Users/joshu/Desktop/Repos/RingsLabDB/1k/" + deletedExtension + ".sql", 'wt')
+
+    
 
     # Printing to new .sql file (inserting table header)
     print("CREATE TABLE " + deletedExtension + "\n(\n\tradius int,\n\tdat int,\n\tnbins int,\n\tet int,\n\tlon int, \n\ttau int, \n\ttaumax int, \n\tphi int, \n\tbackground int, \n\tdlos int, \n\timaxrr int, \n\tbackrr int, \n\tbackpts int, \n\tflag int, \n\tsource_product int, \n\tcims_product int\n);\n\n", file=newFile)
-    print("INSERT INTO " + deletedExtension + " (radius, dat, nbins, et, lon, tau, taumax, phi, background, dlos, imaxrr, backrr, backpts, flag, source_product, cims_product)\nVALUES\n", file=newFile)
+    print("INSERT INTO " + deletedExtension + " (radius, dat, nbins, et, lon, tau, taumax, phi, background, dlos, flag)\nVALUES\n", file=newFile)
     i=0
     while i < arrayLen:
         print('\t("' + str(radius[i]) + '", "' + str(dat[i]) + '", "' + str(nbins[i]) + '", "' + str(et[i]) + '", "' + str(lon[i]) + '", "' + str(tau[i]) + '", "' + str(taumax[i]) + '", "' + str(phi[i]) + '", "' +  str(background[i]) + '", "' + str(dlos[i]) + '", "' + str(flag[i]) + '"),', file=newFile)
@@ -183,7 +188,8 @@ for filename in os.listdir(directory):
             print('\t("' + str(cims_product[i]) + '");', file=newFile)
         i+=1
 
-
+    #TEST
+    print("done creating file: " + deletedExtension)
 
     # close sql file
     newFile.close()
