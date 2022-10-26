@@ -7,7 +7,8 @@ import scipy.io as sio
 import os
 
 # assign directory
-directory = 'C:/Users/joshu/Desktop/FixedRawData/UVIS 1km Radially Binned PDS data IDL Save Files'
+#directory = 'C:/Users/joshu/Desktop/FixedRawData/UVIS 1km Radially Binned PDS data IDL Save Files'
+directory = 'C:/Users/joshu/Desktop/FixedRawData/UVIS 10km Radially Binned PDS Data in IDL Save Files'
 
 '''
 (18 total arrays?)
@@ -58,6 +59,16 @@ for filename in os.listdir(directory):
         print(mydata.items())
     '''
 
+    if curFile == "LAM AQL 132_UVIS_Egress_bad_bckgnd_1km.sav" or curFile == "LAM AQL 132_UVIS_Egress_bad_bckgnd_10km.sav":
+        #TEST
+        #for key in mydata:
+            #print(mydata.items())
+        imaxrr = mydata.pdsdata.i0rr[0]
+
+    else:
+        imaxrr = mydata.pdsdata.imaxrr[0]
+
+
     radius = mydata.pdsdata.radius[0]
     dat = mydata.pdsdata.dat[0]
     nbins = mydata.pdsdata.nbins[0]
@@ -69,7 +80,7 @@ for filename in os.listdir(directory):
     b_angle = mydata.pdsdata.b_angle #TEST - THIS ARRAY IS DIFFERENT(?) only one number in it
     background = mydata.pdsdata.background[0]
     dlos = mydata.pdsdata.dlos[0]
-    imaxrr = mydata.pdsdata.imaxrr[0]
+    #imaxrr = mydata.pdsdata.imaxrr[0]
     backrr = mydata.pdsdata.backrr[0]
     backpts = mydata.pdsdata.backpts[0]
     flag = mydata.pdsdata.flag[0]
@@ -120,8 +131,8 @@ for filename in os.listdir(directory):
 
     # change destination based on 1k or 10k files
     # create new .sql file for curFile
-    newFile = open("C:/Users/joshu/Desktop/Repos/RingsLabDB/1k/" + deletedExtension + ".sql", 'wt')
-
+    #newFile = open("C:/Users/joshu/Desktop/Repos/RingsLabDB/1k/" + deletedExtension + ".sql", 'wt')
+    newFile = open("C:/Users/joshu/Desktop/Repos/RingsLabDB/10k/" + deletedExtension + ".sql", 'wt')
     
 
     # Printing to new .sql file (inserting table header)
