@@ -136,9 +136,12 @@ for filename in os.listdir(directory):
     
 
     # Printing to new .sql file (inserting table header)
+    #CHANGE: print statement. add id array that is the length of arrayLen, in this array. Id starts at 1. NOT NULL, AUTO_INCREMENT
     print("CREATE TABLE " + deletedExtension + "\n(\n\tradius int,\n\tdat int,\n\tnbins int,\n\tet int,\n\tlon int, \n\ttau int, \n\ttaumax int, \n\tphi int, \n\tbackground int, \n\tdlos int, \n\timaxrr int, \n\tbackrr int, \n\tbackpts int, \n\tflag int, \n\tsource_product int, \n\tcims_product int\n);\n\n", file=newFile)
+    #CHANGE: don't need to manually update ID here 
     print("INSERT INTO " + deletedExtension + " (radius, dat, nbins, et, lon, tau, taumax, phi, background, dlos, flag)\nVALUES\n", file=newFile)
     i=0
+    #CHANGE: don't need to manually update ID here 
     while i < arrayLen:
         print('\t("' + str(radius[i]) + '", "' + str(dat[i]) + '", "' + str(nbins[i]) + '", "' + str(et[i]) + '", "' + str(lon[i]) + '", "' + str(tau[i]) + '", "' + str(taumax[i]) + '", "' + str(phi[i]) + '", "' +  str(background[i]) + '", "' + str(dlos[i]) + '", "' + str(flag[i]) + '"),', file=newFile)
         #if last variable, instead of ending print with ',' you must end print with ';'
@@ -146,6 +149,7 @@ for filename in os.listdir(directory):
             print('\t("' + str(radius[i]) + '", "' + str(dat[i]) + '", "' + str(nbins[i]) + '", "' + str(et[i]) + '", "' + str(lon[i]) + '", "' + str(tau[i]) + '", "' + str(taumax[i]) + '", "' + str(phi[i]) + '", "' + str(background[i]) + '", "' + str(dlos[i]) + '", "' + str(flag[i]) + '");', file=newFile)
         i += 1
 
+    #CHANGE: print. set b_angle = value where ID = 1 (SQL syntax)
     # Insert b_angle table seperately (length of 1)
     # Turn b_angle into string because it prints with brackets [] for some reason
     b_angleString = str(b_angle)
@@ -155,6 +159,7 @@ for filename in os.listdir(directory):
     #print('\t("' + str(b_angle) + '");', file=newFile)
     print('\t("' + b_angleString + '");', file=newFile)
     
+    #CHANGE: print loop, set imaxrr= [i] where ID = i+1 (SQL syntax)
     # Insert imaxrr seperately
     arrayLen2 = len(imaxrr)
     print("INSERT INTO " + deletedExtension + " (imaxrr)\nVALUES\n", file=newFile)
@@ -166,6 +171,7 @@ for filename in os.listdir(directory):
             print('\t("' + str(imaxrr[i]) + '");', file=newFile)
         i+=1
 
+    #CHANGE: change print, set backrr = [i] and backpts = [i]
     # Insert backrr and backpts seperately
     arrayLen3 = len(backrr)
     print("INSERT INTO " + deletedExtension + " (backrr, backpts)\nVALUES\n", file=newFile)
@@ -177,6 +183,7 @@ for filename in os.listdir(directory):
             print('\t("' + str(backrr[i]) + '", "' + str(backpts[i]) + '");', file=newFile)
         i+=1
 
+    #CHANGE: change print, set source_product = [i] where ID = i+1 (SQL syntax)
     # Insert source_product seperately
     arrayLen4 = len(source_product)
     print("INSERT INTO " + deletedExtension + " (source_product)\nVALUES\n", file=newFile)
@@ -188,6 +195,7 @@ for filename in os.listdir(directory):
             print('\t("' + str(source_product[i]) + '");', file=newFile)
         i+=1
 
+    #CHANGE: change print, set cims_product = [i] where ID = i+1 (SQL syntax)
     # Insert cims_product seperately
     arrayLen5 = len(cims_product)
     print("INSERT INTO " + deletedExtension + " (cims_product)\nVALUES\n", file=newFile)
