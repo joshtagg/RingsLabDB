@@ -136,32 +136,28 @@ for filename in os.listdir(directory):
     
 
     # Printing to new .sql file (inserting table header)
-    #CHANGE: print statement. add id array that is the length of arrayLen, in this array. Id starts at 1. NOT NULL, AUTO_INCREMENT
-    print("CREATE TABLE " + deletedExtension + "\n(\n\tradius int,\n\tdat int,\n\tnbins int,\n\tet int,\n\tlon int, \n\ttau int, \n\ttaumax int, \n\tphi int, \n\tbackground int, \n\tdlos int, \n\timaxrr int, \n\tbackrr int, \n\tbackpts int, \n\tflag int, \n\tsource_product int, \n\tcims_product int\n);\n\n", file=newFile)
-    #CHANGE: don't need to manually update ID here 
+    print("CREATE TABLE " + deletedExtension + "\n(\n\tID int NOT NULL AUTO_INCREMENT,\n\tradius real,\n\tdat real,\n\tnbins real,\n\tet real,\n\tlon real, \n\ttau real, \n\ttaumax real, \n\tphi real, \n\tbackground real, \n\tdlos real, \n\timaxrr real, \n\tbackrr real, \n\tbackpts real, \n\tflag real, \n\tb_angle real, \n\tsource_product real, \n\tcims_product real,\n\tPRIMARY KEY(ID)\n);\n\n", file=newFile)
     print("INSERT INTO " + deletedExtension + " (radius, dat, nbins, et, lon, tau, taumax, phi, background, dlos, flag)\nVALUES\n", file=newFile)
     i=0
-    #CHANGE: don't need to manually update ID here 
     while i < arrayLen:
-        print('\t("' + str(radius[i]) + '", "' + str(dat[i]) + '", "' + str(nbins[i]) + '", "' + str(et[i]) + '", "' + str(lon[i]) + '", "' + str(tau[i]) + '", "' + str(taumax[i]) + '", "' + str(phi[i]) + '", "' +  str(background[i]) + '", "' + str(dlos[i]) + '", "' + str(flag[i]) + '"),', file=newFile)
-        #if last variable, instead of ending print with ',' you must end print with ';'
         if i == arrayLen-1:
             print('\t("' + str(radius[i]) + '", "' + str(dat[i]) + '", "' + str(nbins[i]) + '", "' + str(et[i]) + '", "' + str(lon[i]) + '", "' + str(tau[i]) + '", "' + str(taumax[i]) + '", "' + str(phi[i]) + '", "' + str(background[i]) + '", "' + str(dlos[i]) + '", "' + str(flag[i]) + '");', file=newFile)
+        else:
+            print('\t("' + str(radius[i]) + '", "' + str(dat[i]) + '", "' + str(nbins[i]) + '", "' + str(et[i]) + '", "' + str(lon[i]) + '", "' + str(tau[i]) + '", "' + str(taumax[i]) + '", "' + str(phi[i]) + '", "' +  str(background[i]) + '", "' + str(dlos[i]) + '", "' + str(flag[i]) + '"),', file=newFile) 
         i += 1
 
-    #CHANGE: print. set b_angle = value where ID = 1 (SQL syntax)
-    # Insert b_angle table seperately (length of 1)
+    # Insert b_angle table seperately (length of 1)-----------------------------------
     # Turn b_angle into string because it prints with brackets [] for some reason
     b_angleString = str(b_angle)
     b_angleString = b_angleString.replace('[', '')
     b_angleString = b_angleString.replace(']', '')
-    print("INSERT INTO " + deletedExtension + " (b_angle)\nVALUES\n", file=newFile)
-    #print('\t("' + str(b_angle) + '");', file=newFile)
-    print('\t("' + b_angleString + '");', file=newFile)
+    #print("INSERT INTO " + deletedExtension + " (b_angle)\nVALUES\n", file=newFile)
+    #print('\t("' + b_angleString + '");', file=newFile)
+    print("UPDATE " + deletedExtension + "\nSET b_angle = " + b_angleString + "\nWHERE ID = 1;\n", file=newFile)
     
-    #CHANGE: print loop, set imaxrr= [i] where ID = i+1 (SQL syntax)
-    # Insert imaxrr seperately
+    # Insert imaxrr seperately--------------------------------------------------------
     arrayLen2 = len(imaxrr)
+    '''
     print("INSERT INTO " + deletedExtension + " (imaxrr)\nVALUES\n", file=newFile)
     i = 0
     while i < arrayLen2:
@@ -170,41 +166,59 @@ for filename in os.listdir(directory):
         if i == arrayLen2-1:
             print('\t("' + str(imaxrr[i]) + '");', file=newFile)
         i+=1
-
-    #CHANGE: change print, set backrr = [i] and backpts = [i]
-    # Insert backrr and backpts seperately
+    '''
+    i = 0
+    while i < arrayLen2:
+        print("UPDATE " + deletedExtension + "\nSET imaxrr = " + str(imaxrr[i]) + "\nWHERE ID = " + str(i+1) + ';\n', file=newFile)
+        i+=1
+    
+    # Insert backrr and backpts seperately ---------------------------------------------
     arrayLen3 = len(backrr)
-    print("INSERT INTO " + deletedExtension + " (backrr, backpts)\nVALUES\n", file=newFile)
+    #print("INSERT INTO " + deletedExtension + " (backrr, backpts)\nVALUES\n", file=newFile)
     i=0
+    '''
     while i < arrayLen3:
         print('\t("' + str(backrr[i]) + '", "' + str(backpts[i]) + '"),', file=newFile)
 
         if i == arrayLen3-1:
             print('\t("' + str(backrr[i]) + '", "' + str(backpts[i]) + '");', file=newFile)
         i+=1
+    '''
+    while i < arrayLen3:
+        print("UPDATE " + deletedExtension + "\nSET backrr = " + str(backrr[i]) + "\nWHERE ID = " + str(i+1) + ';\n', file=newFile)
+        print("UPDATE " + deletedExtension + "\nSET backpts = " + str(backpts[i]) + "\nWHERE ID = " + str(i+1) + ';\n', file=newFile)
+        i+=1
 
-    #CHANGE: change print, set source_product = [i] where ID = i+1 (SQL syntax)
-    # Insert source_product seperately
+    # Insert source_product seperately------------------------------------------------------
     arrayLen4 = len(source_product)
-    print("INSERT INTO " + deletedExtension + " (source_product)\nVALUES\n", file=newFile)
+    #print("INSERT INTO " + deletedExtension + " (source_product)\nVALUES\n", file=newFile)
     i = 0
+    '''
     while i < arrayLen4:
         print('\t("' + str(source_product[i]) + '"),', file=newFile)
 
         if i == arrayLen4-1:
             print('\t("' + str(source_product[i]) + '");', file=newFile)
         i+=1
+    '''
+    while i < arrayLen4:
+        print("UPDATE " + deletedExtension + "\nSET source_product = " + str(source_product[i]) + "\nWHERE ID = " + str(i+1) + ';\n', file=newFile)
+        i+=1
 
-    #CHANGE: change print, set cims_product = [i] where ID = i+1 (SQL syntax)
-    # Insert cims_product seperately
+    # Insert cims_product seperately----------------------------------------------------------
     arrayLen5 = len(cims_product)
-    print("INSERT INTO " + deletedExtension + " (cims_product)\nVALUES\n", file=newFile)
+    #print("INSERT INTO " + deletedExtension + " (cims_product)\nVALUES\n", file=newFile)
     i=0
+    '''
     while i < arrayLen5:
         print('\t("' + str(cims_product[i]) + '"),', file=newFile)
 
         if i == arrayLen5-1:
             print('\t("' + str(cims_product[i]) + '");', file=newFile)
+        i+=1
+    '''
+    while i < arrayLen5:
+        print("UPDATE " + deletedExtension + "\nSET cims_product = " + str(cims_product[i]) + "\nWHERE ID = " + str(i+1) + ';\n', file=newFile)
         i+=1
 
     #TEST

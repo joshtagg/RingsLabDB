@@ -3,14 +3,14 @@ USE testing;
 
 CREATE TABLE Occultation (
     ID      int NOT NULL AUTO_INCREMENT,
-    radius  int,
-    imaxrr  int,
+    radius  real,
+    imaxrr  real,
     PRIMARY KEY(ID)
 );
 
 INSERT INTO Occultation (radius)
 VALUES
-    (1), (2), (3), (4), (5), (6);
+    (1.3542652), (2.1), (3.432534252532413213), (4), (5), (6);
 
 /* Create loop: 
 where id = 1, insert 122
