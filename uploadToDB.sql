@@ -5,7 +5,7 @@ SET autocommit=0 ; source C:\Users\joshu\Desktop\FixedRawData\10kSQLfixed\3CEN04
 
 SET autocommit=0 ; source C:\Users\joshu\Desktop\FixedRawData\10kAnd1kCombined\OneFile1k.sql ; COMMIT ;
 
-SET autocommit=0 ; source C:\Users\joshu\Desktop\FixedRawData\10kAnd1kCombined\OneFile10k.sql ; COMMIT ;
+SET autocommit=0 ; source C:\Users\joshu\Desktop\FixedRawData\10kAnd1kCombined\OneFile10kFixed.sql ; COMMIT ;
 
 /*
 
